@@ -37,13 +37,58 @@
 	
 	
 	
+	iridia.slidesControllerSlideLayoutMatrix = new JS.Class({
+	
+		initialize: function () {
+		
+			this.__defineGetter__("bounds", this.getBounds);
+		
+		},
+		
+		/* ({width: Number, height: Number}) */ getBounds: function () {
+		
+			return {
+			
+				width: this.size.width || 0,
+				height: this.size.height || 0
+			
+			}
+		
+		},
+		
+		/* (void) */ pushSlide: function (inSlide, inOffsetX, inOffsetY) {
+		
+			this.slides.push({
+			
+				slide: inSlide,
+				offsetX: inOffsetX,
+				offsetY: inOffsetY
+			
+			});
+		
+		}
+	
+	});
+	
+	
+	
+	
+	
 	iridia.slidesControllerSlidePresets = {
 	
 		layout: {
 		
-			vertical: function () {
+			/* (iridia.slidesControllerSlideLayoutMatrix) */ vertical: function () {
 			
+				var theMatrix = new iridia.slidesControllerSlideLayoutMatrix();
 				
+				$.each(this.slides, function (indexOfSlide, theSlide) {
+				
+					theMatrix.pushSlide(theSlide, theMatrix.getBounds().width + 32, 0);
+				
+				});
+				
+				return theMatrix;
 			
 			}
 		
