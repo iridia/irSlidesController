@@ -113,6 +113,14 @@
 	
 	
 	
+	iridia.slidesControllerSlideDelegate = new JS.Interface([
+	
+		/* (void) */ "slideWillLoad",
+		/* (void) */ "slideDidFinishLoading",
+		/* (void) */ "slideFailedLoading"
+	
+	]);
+	
 	iridia.slidesControllerSlide = new JS.Class({
 	
 		initialize: function (options) {
@@ -124,6 +132,12 @@
 				contextInfo: undefined
 			
 			}, options);
+		
+		},
+		
+		loadContent: function () {
+		
+			
 		
 		}
 	
