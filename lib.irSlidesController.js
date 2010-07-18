@@ -147,16 +147,46 @@
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 			
 				name: "",
-				manifestObject: undefined,
-				contextInfo: undefined
+				manifestObject: null,
+				payloadType: "image",
+				payloadResource: null,
+				contextInfo: null
 			
 			}, options);
+			
+			this.slideReady = false;
+			
+			if (this.options.payloadResource !== null)
+			this.loadContent();
 		
 		},
 		
 		loadContent: function () {
 		
+		//	Assume payload is image
+		
+			var thisObject = this;
 			
+			$("<img>").attr("src", thisObject.options.payloadResource).bind("load", (function () {
+			
+				return function () {
+				
+					thisObject.imageDidLoad.call(thisObject, arguments);
+				
+				}
+			
+			})()).appendTo(thisObject.manifestObject);
+		
+		},
+		
+		imageDidLoad: function (event) {
+		
+			this.slideReady = true;
+			
+			this.delegate.slideDidLoad(this, this.options.contextInfo);
+		
+			if (this.delegate.slideShouldShow(this))
+			this.delegate.transitionIfAppropriate();
 		
 		}
 	
