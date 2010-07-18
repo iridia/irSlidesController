@@ -24,6 +24,8 @@
 	
 	iridia.slidesControllerDelegate = new JS.Interface([
 	
+		/* ([iridia.slidesControllerSlides, …]) */ "slidesForController" /* (slideController) */,
+	
 		/* (void) */ "slideWillAppear" /* (slideController, theSlide) */,
 		/* (void) */ "slideDidAppear" /* (slideController, theSlide) */,
 		
@@ -188,24 +190,29 @@
 	
 	iridia.slidesController = new JS.Class({
 	
-		/* (void) */ initialize: function (options) {
+		/* (void) */ initialize: function (inOptions, inDelegate) {
 		
-			this.slides = [];
-			
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 
-				container: undefined,
-		
-				slides: [],
+				containerElement: undefined,
 				
-				layout: this.presets.layout.vertical,
+				layout: iridia.slidesControllerSlidePresets.layout.alongX,
 				
-				onSlideBlur: irSlidesController.presets.slideFocus.fadeOut,
-				onSlideFocus: irSlidesController.presets.slideFocus.fadeIn,
+				onSlideBlur: iridia.slidesControllerSlidePresets.slideTransitions.fadeIn,
+				onSlideFocus: iridia.slidesControllerSlidePresets.slideTransitions.fadeOut,
 				
 				initializeImmediately: true
 		
 			}, options);
+			
+			this.delegate = inDelegate;
+			this.slides = this.delegate.slidesForController(this);
+			
+			this.currentSlideHash = undefined;
+			this.promisedSlideHash = undefined;
+			
+			this.layoutIfNeeded();
+			this.transitionIfAppropriate();
 		
 		},
 		
@@ -276,7 +283,20 @@
 	//	! 
 	//	!Geometry
 	
-		/* (void) */ layoutSlides: function () {
+		/* (void) */ layoutIfNeeded: function () {
+		
+			
+		
+		},
+	
+	
+	
+	
+	
+	//	! 
+	//	!Slides Switching
+	
+		transitionIfAppropriate: function () {
 		
 			
 		
