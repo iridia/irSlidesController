@@ -120,11 +120,19 @@
 		
 		},
 		
-		slideFocus: {
+		slideTransitions: {
 		
-		},
-		
-		slideBlur: {
+			/* (void) */ fadeIn: function (theSlide) {
+			
+				theSldie.manifestObject.stop(true, true).fadeTo(250, 1);
+			
+			},
+			
+			/* (void) */ fadeOut: function (theSlide) {
+			
+				theSldie.manifestObject.stop(true, true).fadeTo(250, 0);
+			
+			}
 		
 		}
 	
