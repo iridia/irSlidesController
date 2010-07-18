@@ -5,6 +5,12 @@
 
 
 
+	JS.require("jQuery.event.special.load", "jQuery.scrollTo");
+	
+	
+	
+	
+	
 	window.iridia = (window && window.iridia || {});
 	
 	
