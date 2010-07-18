@@ -84,13 +84,33 @@
 	
 		layout: {
 		
-			/* (iridia.slidesControllerSlideLayoutMatrix) */ vertical: function () {
+			/* (iridia.slidesControllerSlideLayoutMatrix) */ alongX: function (plausiblePadding) {
+			
+				if (!(plausiblePadding = Number(plausiblePadding)))
+				plausiblePadding = 32;
 			
 				var theMatrix = new iridia.slidesControllerSlideLayoutMatrix();
 				
 				$.each(this.slides, function (indexOfSlide, theSlide) {
 				
-					theMatrix.pushSlide(theSlide, theMatrix.getBounds().width + 32, 0);
+					theMatrix.pushSlide(theSlide, (theMatrix.getBounds().width + plausiblePadding), 0);
+				
+				});
+				
+				return theMatrix;
+			
+			},
+			
+			/* (iridia.slidesControllerSlideLayoutMatrix) */ alongY: function (plausiblePadding) {
+			
+				if (!(plausiblePadding = Number(plausiblePadding)))
+				plausiblePadding = 32;
+			
+				var theMatrix = new iridia.slidesControllerSlideLayoutMatrix();
+				
+				$.each(this.slides, function (indexOfSlide, theSlide) {
+				
+					theMatrix.pushSlide(theSlide, 0, (theMatrix.getBounds().width + plausiblePadding));
 				
 				});
 				
