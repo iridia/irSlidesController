@@ -22,29 +22,6 @@
 	
 	
 	
-	iridia.slidesControllerDelegate = new JS.Interface([
-	
-		/* ([iridia.slidesControllerSlides, …]) */ "slidesForController" /* (slideController) */,
-	
-		/* (void) */ "slideWillAppear" /* (slideController, theSlide) */,
-		/* (void) */ "slideDidAppear" /* (slideController, theSlide) */,
-		
-		/* (void) */ "slideWillDisappear" /* (slideController, theSlide) */,
-		/* (void) */ "slideDidDisappear" /* (slideController, theSlide) */,
-		
-		/* (Boolean) */ "slidesControllerShouldShowSlide" /* (slideController, theSlide) */
-	
-	]);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	iridia.slidesControllerSlideLayoutMatrix = new JS.Class({
 	
 		initialize: function () {
@@ -149,15 +126,21 @@
 	
 	
 	
-	iridia.slidesControllerSlideDelegate = new JS.Interface([
-	
-		/* (void) */ "slideWillLoad",
-		/* (void) */ "slideDidFinishLoading",
-		/* (void) */ "slideFailedLoading"
-	
-	]);
-	
 	iridia.slidesControllerSlide = new JS.Class({
+
+		include: JS.Delegatable,
+		
+		extend: {
+		
+			delegateProtocol: new JS.Interface([
+			
+				/* (void) */ "slideWillLoad",
+				/* (void) */ "slideDidFinishLoading",
+				/* (void) */ "slideFailedLoading"
+			
+			])
+		
+		},
 	
 		initialize: function (options) {
 		
@@ -190,6 +173,29 @@
 	
 	iridia.slidesController = new JS.Class({
 	
+		include: JS.Delegatable,
+		extend: {
+		
+			delegateProtocol: new JS.Interface([
+	
+				/* ([iridia.slidesControllerSlides, …]) */ "slidesForController" /* (slideController) */,
+			
+				/* (void) */ "slideWillAppear" /* (slideController, theSlide) */,
+				/* (void) */ "slideDidAppear" /* (slideController, theSlide) */,
+				
+				/* (void) */ "slideWillDisappear" /* (slideController, theSlide) */,
+				/* (void) */ "slideDidDisappear" /* (slideController, theSlide) */,
+				
+				/* (Boolean) */ "slidesControllerShouldShowSlide" /* (slideController, theSlide) */
+			
+			])
+		
+		},
+		
+		
+		
+		
+		
 		/* (void) */ initialize: function (inOptions, inDelegate) {
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
@@ -203,11 +209,12 @@
 				
 				initializeImmediately: true
 		
-			}, options);
+			}, inOptions);
 			
-			this.delegate = inDelegate;
+			this.setDelegate(inDelegate);
+			
 			this.slides = this.delegate.slidesForController(this);
-			
+
 			this.currentSlideHash = undefined;
 			this.promisedSlideHash = undefined;
 			
@@ -257,29 +264,6 @@
 		
 		
 	
-	//	! 	
-	//	!Delegation	
-		
-		/* (void) */ setDelegate: function(inObject) {
-		
-			try {
-			
-				JS.Interface.ensure(inObject, iridia.slidesControllerDelegate);
-			
-			} catch (exception) {
-			
-				return mono.die(mono.error(exception));
-			
-			}
-			
-			this.delegate = inObject;
-			
-		},
-		
-		
-		
-		
-		
 	//	! 
 	//	!Geometry
 	
