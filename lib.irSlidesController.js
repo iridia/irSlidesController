@@ -226,7 +226,7 @@
 		
 		
 		
-		/* (void) */ initialize: function (inOptions, inDelegate) {
+		/* (void) */ initialize: function (inDelegate, inOptions) {
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 
