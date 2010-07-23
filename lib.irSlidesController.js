@@ -273,7 +273,6 @@
 	
 	iridia.slidesController = new JS.Class({
 	
-		include: JS.Delegatable,
 		extend: {
 		
 			delegateProtocol: new JS.Interface([
@@ -296,7 +295,9 @@
 		
 		
 		
-		/* (void) */ initialize: function (inDelegate, inOptions) {
+		/* (void) */ initialize: function (inOptions, inDelegate) {
+		
+			this.extend(JS.Delegatable);
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 
@@ -307,6 +308,8 @@
 				onSlideBlur: iridia.slidesControllerSlidePresets.slideTransitions.fadeIn,
 				onSlideFocus: iridia.slidesControllerSlidePresets.slideTransitions.fadeOut,
 				
+				transitionInterval: 5000,
+				
 				initializeImmediately: true
 		
 			}, inOptions);
@@ -314,6 +317,8 @@
 			this.setDelegate(inDelegate);
 			
 			this.slides = this.delegate.slidesForController(this);
+
+			this.timer = null;
 
 			this.currentSlideHash = undefined;
 			this.promisedSlideHash = undefined;
@@ -363,6 +368,53 @@
 		
 		
 		
+	
+	//	! 
+	//	!Timer
+	
+		startTimer: function () {
+		
+			this.stopTimer();
+			this.timer = undefined;
+			
+			var thisObject = this;
+			this.timer = window.setInterval(function () {
+			
+				thisObject.timerHandler.call(thisObject);
+			
+			}, this.options.transitionInterval);
+		
+		},
+		
+		stopTimer: function () {
+		
+			if (this.timer === undefined) return;
+		
+			window.clearInterval(this.timer);
+			this.timer = undefined;
+		
+		},
+		
+		/* (void) */ setTimerInterval: function (inInterval) {
+		
+			this.options.transitionInterval = inInterval;
+			
+			if (this.timer === undefined) return;
+			
+			this.stopTimer();
+			this.startTimer();
+		
+		},
+		
+		/* (void) */ timerHandler: function () {
+		
+			mono.log("timer fired");
+		
+		},
+	
+	
+	
+	
 	
 	//	! 
 	//	!Geometry
