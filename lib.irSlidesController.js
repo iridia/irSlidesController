@@ -26,7 +26,14 @@
 	
 		initialize: function () {
 		
-			this.__defineGetter__("bounds", this.getBounds);
+			this.bounds = {
+			
+				width: 0,
+				height: 0
+			
+			}
+			
+			this.slides = [];
 		
 		},
 		
@@ -34,8 +41,8 @@
 		
 			return {
 			
-				width: this.size.width || 0,
-				height: this.size.height || 0
+				width: this.bounds.width || 0,
+				height: this.bounds.height || 0
 			
 			}
 		
@@ -46,10 +53,50 @@
 			this.slides.push({
 			
 				slide: inSlide,
-				offsetX: inOffsetX,
-				offsetY: inOffsetY
+				offsetX: Number(inOffsetX) || 0,
+				offsetY: Number(inOffsetY) || 0
 			
 			});
+			
+			this.calculateBounds();
+		
+		},
+		
+		/* (void) */ calculateBounds: function () {
+		
+			var knownBounds = {
+			
+				width: 0,
+				height: 0
+			
+			};
+		
+			$.each(this.slides, function (indexOfSlide, slideMetaObject) {
+			
+				if (slideMetaObject.slide === undefined) return;				
+				if (slideMetaObject.offsetX === undefined) return;
+				if (slideMetaObject.offsetY === undefined) return;
+				
+				try {
+				
+					JS.Interface.ensure(slideMetaObject.slide, iridia.slidesControllerSlide.propertyProtocol);
+				
+				} catch (exceptionString) {
+				
+					mono.log("Slide", slideMetaObject.slide, "is not a nicely formatted slide, skipping.");
+				
+				}
+			
+				knownBounds = {
+				
+					width: Math.max(knownBounds.width, slideMetaObject.slide.offsetX + slideMetaObject.slide.getWidth()),
+					height: Math.max(knownBounds.width, slideMetaObject.slide.offsetY + slideMetaObject.slide.getHeight())
+					
+				};
+			
+			});
+			
+			this.bounds = knownBounds;
 		
 		}
 	
@@ -128,9 +175,14 @@
 	
 	iridia.slidesControllerSlide = new JS.Class({
 
-		include: JS.Delegatable,
-		
 		extend: {
+		
+			propertyProtocol: new JS.Interface([
+			
+				/* (Number) */ "getWidth",
+				/* (Number) */ "getHeight"
+			
+			]),
 		
 			delegateProtocol: new JS.Interface([
 			
@@ -142,7 +194,9 @@
 		
 		},
 	
-		initialize: function (options) {
+		include: JS.Delegatable,
+		
+		initialize: function (inOptions, inDelegate) {
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 			
@@ -152,12 +206,28 @@
 				payloadResource: null,
 				contextInfo: null
 			
-			}, options);
+			}, inOptions);
 			
 			this.slideReady = false;
+			this.setDelegate(inDelegate);
+			
+			this.width = null;
+			this.height = null;
 			
 			if (this.options.payloadResource !== null)
 			this.loadContent();
+		
+		},
+		
+		/* (Number) */ getWidth: function () {
+		
+			return this.width;
+		
+		},
+		
+		/* (Number) */ getHeight: function () {
+		
+			return this.height;
 		
 		},
 		
