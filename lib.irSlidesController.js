@@ -408,7 +408,7 @@
 		
 		/* (void) */ timerHandler: function () {
 		
-			mono.log("timer fired");
+			this.transitionIfAppropriate();
 		
 		},
 	
