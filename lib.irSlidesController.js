@@ -337,13 +337,13 @@
 	
 		/* (void) */ start: function () {
 		
-			
+			mono.log("Slides controller starting");
 		
 		},
 		
 		/* (void) */ stop: function () {
 		
-			
+			mono.log("Slides controller stopping");
 		
 		},
 		
@@ -372,41 +372,41 @@
 	//	! 
 	//	!Timer
 	
-		startTimer: function () {
+		_startTimer: function () {
 		
-			this.stopTimer();
-			this.timer = undefined;
+			this._stopTimer();
+			this._timer = undefined;
 			
 			var thisObject = this;
-			this.timer = window.setInterval(function () {
+			this._timer = window.setInterval(function () {
 			
-				thisObject.timerHandler.call(thisObject);
+				thisObject._timerHandler.call(thisObject);
 			
 			}, this.options.transitionInterval);
 		
 		},
 		
-		stopTimer: function () {
+		_stopTimer: function () {
 		
 			if (this.timer === undefined) return;
 		
-			window.clearInterval(this.timer);
-			this.timer = undefined;
+			window.clearInterval(this._timer);
+			this._timer = undefined;
 		
 		},
 		
-		/* (void) */ setTimerInterval: function (inInterval) {
+		/* (void) */ _setTimerInterval: function (inInterval) {
 		
 			this.options.transitionInterval = inInterval;
 			
-			if (this.timer === undefined) return;
+			if (this._timer === undefined) return;
 			
-			this.stopTimer();
-			this.startTimer();
+			this._stopTimer();
+			this._startTimer();
 		
 		},
 		
-		/* (void) */ timerHandler: function () {
+		/* (void) */ _timerHandler: function () {
 		
 			this.transitionIfAppropriate();
 		
