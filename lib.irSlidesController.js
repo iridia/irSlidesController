@@ -142,6 +142,20 @@
 				
 				return theMatrix;
 			
+			},
+			
+			/* (iridia.slidesControllerSlideLayoutMatrix) */ stacked: function () {
+			
+				var theMatrix = new iridia.slidesControllerSlideLayoutMatrix();
+				
+				$.each(this.slides, function (indexOfSlide, theSlide) {
+				
+					theMatrix.pushSlide(theSlide, 0, 0);
+				
+				});
+				
+				return theMatrix;
+			
 			}
 		
 		},
@@ -150,13 +164,13 @@
 		
 			/* (void) */ fadeIn: function (theSlide) {
 			
-				theSldie.manifestObject.stop(true, true).fadeTo(250, 1);
+				theSlide.options.manifestObject.stop(true, true).fadeTo(250, 1);
 			
 			},
 			
 			/* (void) */ fadeOut: function (theSlide) {
 			
-				theSldie.manifestObject.stop(true, true).fadeTo(250, 0);
+				theSlide.options.manifestObject.stop(true, true).fadeTo(250, 0);
 			
 			}
 		
