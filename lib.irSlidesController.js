@@ -316,8 +316,8 @@
 				
 				layout: iridia.slidesControllerSlidePresets.layout.alongX,
 				
-				onSlideBlur: iridia.slidesControllerSlidePresets.slideTransitions.fadeIn,
-				onSlideFocus: iridia.slidesControllerSlidePresets.slideTransitions.fadeOut,
+				onSlideFocus: iridia.slidesControllerSlidePresets.slideTransitions.fadeIn,
+				onSlideBlur: iridia.slidesControllerSlidePresets.slideTransitions.fadeOut,
 				
 				transitionInterval: 5000,
 				
