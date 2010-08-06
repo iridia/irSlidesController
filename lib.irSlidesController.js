@@ -368,12 +368,14 @@
 		/* (void) */ start: function () {
 		
 			mono.log("Slides controller starting");
+			this._startTimer();
 		
 		},
 		
 		/* (void) */ stop: function () {
 		
 			mono.log("Slides controller stopping");
+			this._stopTimer();
 		
 		},
 		
@@ -385,14 +387,17 @@
 		
 		/* (iridia.slidesControllerSlide) theSlideOrNil */ getCurrentSlide: function () {
 		
-			
+			return this.currentSlideIndex;
 		
 		},
 	
 		/* (Boolean) setSucceeded */ setCurrentSlide: function (slideIndex, animated, stopsAfterTransition) {
 		
-			
+			if (stopsAfterTransition) this.stop();
 		
+			this.promisedSlideIndex = slideIndex;
+			this.transitionIfAppropriate();
+			
 		},
 		
 		
@@ -403,8 +408,8 @@
 	//	! Preparing manifest object
 	
 		emptyManifestObject: function () {
-		
-			mono.log("Emptying manifest.");	
+				
+			this.options.containerElement.find("> *").not("[irSlidesControllerConfiguration*='ignore']").remove();
 		
 		},
 		
@@ -451,6 +456,7 @@
 		
 		/* (void) */ _timerHandler: function () {
 		
+			this.promisedSlideIndex ++;
 			this.transitionIfAppropriate();
 		
 		},
