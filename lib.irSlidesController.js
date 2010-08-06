@@ -488,11 +488,13 @@
 	
 		/* (void) */ transitionIfAppropriate: function () {
 		
-		//	Ask the delegate if we may transition
-		
-		//	Check if the slide is loaded, and if not check if a partially loaded slide could be shown.  Otherwise, let the request slide.
-		
-		//	Call transitionToSlide if every single condition is met and there are no surprises	
+			var destinationSlide = this.slides[this.promisedSlideIndex % this.slides.length];
+			
+			if (!this.delegate.slidesControllerShouldShowSlide(this, destinationSlide)) return;
+						
+			if (!destinationSlide.slideReady) return;
+			
+			this.transitionToSlide(destinationSlide);
 		
 		},
 		
