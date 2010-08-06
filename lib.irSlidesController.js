@@ -314,7 +314,7 @@
 				containerElement: undefined,
 				childrenElementSelectorString: "li",
 				
-				layout: iridia.slidesControllerSlidePresets.layout.alongX,
+				layout: iridia.slidesControllerSlidePresets.layout.stacked,
 				
 				onSlideFocus: iridia.slidesControllerSlidePresets.slideTransitions.fadeIn,
 				onSlideBlur: iridia.slidesControllerSlidePresets.slideTransitions.fadeOut,
