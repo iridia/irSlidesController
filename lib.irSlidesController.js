@@ -316,12 +316,15 @@
 			
 			this.setDelegate(inDelegate);
 			
+			this.slides = [];
 			this.slides = this.delegate.slidesForController(this);
 
 			this.timer = null;
 
 			this.currentSlideHash = undefined;
 			this.promisedSlideHash = undefined;
+			
+			this.emptyManifestObject();
 			
 			this.layoutIfNeeded();
 			this.transitionIfAppropriate();
@@ -369,6 +372,19 @@
 		
 		
 	
+	//	! 
+	//	! Preparing manifest object
+	
+		emptyManifestObject: function () {
+		
+			mono.log("Emptying manifest.");	
+		
+		},
+		
+		
+		
+		
+		
 	//	! 
 	//	!Timer
 	
