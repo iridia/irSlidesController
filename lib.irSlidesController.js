@@ -306,6 +306,7 @@
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 
 				containerElement: undefined,
+				childrenElementSelectorString: "li",
 				
 				layout: iridia.slidesControllerSlidePresets.layout.alongX,
 				
@@ -341,8 +342,8 @@
 
 			this.timer = null;
 
-			this.currentSlideHash = undefined;
-			this.promisedSlideHash = undefined;
+			this.currentSlideIndex = undefined;
+			this.promisedSlideIndex = undefined;
 			
 			this.emptyManifestObject();
 			
@@ -458,11 +459,24 @@
 		/* (void) */ layoutIfNeeded: function () {
 		
 		//	Create a layout matrix
-		
-		//	Push slides to the matrix
-		
-		//	Position the slides using the matrix’s information
-		
+	
+			var finalLayout = this.options.layout.call(this);
+			
+			var thisObject = this;
+			
+			$.each(finalLayout.slides, function (slideIndex, slideObject) {
+						
+				slideObject.slide.options.manifestObject = $("<" + thisObject.options.childrenElementSelectorString + ">");
+
+				slideObject.slide.options.manifestObject
+				.css("left", slideObject.offsetX)
+				.css("top", slideObject.offsetY);
+				
+				slideObject.slide.options.manifestObject
+				.appendTo(thisObject.options.containerElement);
+			
+			});
+					
 		},
 	
 	
