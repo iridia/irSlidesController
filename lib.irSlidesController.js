@@ -500,6 +500,8 @@
 	
 		/* (void) */ transitionIfAppropriate: function () {
 		
+			this.promisedSlideIndex = this.promisedSlideIndex || 0;
+		
 			var destinationSlide = this.slides[this.promisedSlideIndex % this.slides.length];
 			
 			if (!this.delegate.slidesControllerShouldShowSlide(this, destinationSlide)) return;
@@ -510,9 +512,63 @@
 		
 		},
 		
-		/* (void) */ transitionToSlide: function () {
+		/* (void) */ transitionToSlide: function (destinationSlide) {
 		
-		//	Get the next slide (may be a positive or negative increase in index count, then call upon the presets — before the transition.  transition use the correct preset function, then after the transition call the handler in the preset again.	
+			mono.log("Transitioning to slide", destinationSlide);
+
+			if (this.slides[this.currentSlideIndex]	!= undefined)
+			this.delegate.slideWillDisappear(this, this.slides[this.currentSlideIndex]);
+			
+			this.options.onSlideBlur(this.slides[this.currentSlideIndex || 0]);
+			
+			if (this.slides[this.currentSlideIndex]	!= undefined)
+			this.delegate.slideDidDisappear(this, this.slides[this.currentSlideIndex]);
+			
+			
+			destinationSlide.options.manifestObject.stop(false, true);
+			
+			
+			if (destinationSlide != undefined)
+			this.delegate.slideWillAppear(this, destinationSlide);
+
+			this.options.onSlideFocus(destinationSlide);
+			
+			if (destinationSlide != undefined)
+			this.delegate.slideDidAppear(this, destinationSlide);
+			
+			
+			this.options.containerElement.scrollTo(destinationSlide.options.manifestObject, 250);
+			
+			this.currentSlideIndex = this.slides.indexOfObject(destinationSlide);
+		
+		},
+		
+		
+		
+		
+		
+	//	! 
+	//	! Slide Delegation
+	
+		/* (void) */ slideWillLoad: function (slide) {
+		
+			
+		
+		},
+		
+		/* (void) */ slideDidFinishLoading: function (slide) {
+		
+			iridia.slidesControllerSlidePresets.slideTransitions.fadeOut(slide);
+			slide.options.manifestObject.stop(false, true);
+			
+			this.options.containerElement.removeClass("loading");
+			this.transitionIfAppropriate();
+		
+		},
+
+		/* (void) */ slideFailedLoading: function () {
+		
+			
 		
 		}
 	
