@@ -514,8 +514,6 @@
 		
 		/* (void) */ transitionToSlide: function (destinationSlide) {
 		
-			mono.log("Transitioning to slide", destinationSlide);
-
 			if (this.slides[this.currentSlideIndex]	!= undefined)
 			this.delegate.slideWillDisappear(this, this.slides[this.currentSlideIndex]);
 			
