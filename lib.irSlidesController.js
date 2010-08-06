@@ -364,7 +364,7 @@
 		
 		/* (Boolean) isAnimating */ isAnimating: function () {
 		
-			
+			return (this._timer == undefined);
 		
 		},
 		
@@ -449,7 +449,11 @@
 	
 		/* (void) */ layoutIfNeeded: function () {
 		
-			
+		//	Create a layout matrix
+		
+		//	Push slides to the matrix
+		
+		//	Position the slides using the matrix’s information
 		
 		},
 	
@@ -460,9 +464,19 @@
 	//	! 
 	//	!Slides Switching
 	
-		transitionIfAppropriate: function () {
+		/* (void) */ transitionIfAppropriate: function () {
 		
-			
+		//	Ask the delegate if we may transition
+		
+		//	Check if the slide is loaded, and if not check if a partially loaded slide could be shown.  Otherwise, let the request slide.
+		
+		//	Call transitionToSlide if every single condition is met and there are no surprises	
+		
+		},
+		
+		/* (void) */ transitionToSlide: function () {
+		
+		//	Get the next slide (may be a positive or negative increase in index count, then call upon the presets — before the transition.  transition use the correct preset function, then after the transition call the handler in the preset again.	
 		
 		}
 	
