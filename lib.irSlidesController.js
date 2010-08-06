@@ -89,11 +89,11 @@
 			
 				knownBounds = {
 				
-					width: Math.max(knownBounds.width, slideMetaObject.slide.offsetX + slideMetaObject.slide.getWidth()),
-					height: Math.max(knownBounds.width, slideMetaObject.slide.offsetY + slideMetaObject.slide.getHeight())
+					width: Math.max(knownBounds.width, slideMetaObject.offsetX + slideMetaObject.slide.getWidth()),
+					height: Math.max(knownBounds.height, slideMetaObject.offsetY + slideMetaObject.slide.getHeight())
 					
 				};
-			
+							
 			});
 			
 			this.bounds = knownBounds;
@@ -119,7 +119,7 @@
 				
 				$.each(this.slides, function (indexOfSlide, theSlide) {
 				
-					theMatrix.pushSlide(theSlide, (theMatrix.getBounds().width + plausiblePadding), 0);
+					theMatrix.pushSlide(theSlide, (theMatrix.getBounds().width + plausiblePadding), plausiblePadding);
 				
 				});
 				
@@ -136,7 +136,7 @@
 				
 				$.each(this.slides, function (indexOfSlide, theSlide) {
 				
-					theMatrix.pushSlide(theSlide, 0, (theMatrix.getBounds().width + plausiblePadding));
+					theMatrix.pushSlide(theSlide, plausiblePadding, (theMatrix.getBounds().width + plausiblePadding));
 				
 				});
 				
@@ -199,7 +199,7 @@
 			this.extend(JS.Delegatable);
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
-			
+
 				name: "",
 				manifestObject: null,
 				payloadType: "image",
@@ -207,8 +207,6 @@
 				contextInfo: null
 			
 			}, inOptions);
-			
-			mono.log("Slides Controller initializing with options", this.options);
 			
 			this.slideReady = false;
 			this.setDelegate(inDelegate);
