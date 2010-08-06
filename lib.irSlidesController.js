@@ -194,9 +194,9 @@
 		
 		},
 	
-		include: JS.Delegatable,
-		
 		initialize: function (inOptions, inDelegate) {
+		
+			this.extend(JS.Delegatable);
 		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 			
@@ -207,6 +207,8 @@
 				contextInfo: null
 			
 			}, inOptions);
+			
+			mono.log("Slides Controller initializing with options", this.options);
 			
 			this.slideReady = false;
 			this.setDelegate(inDelegate);
@@ -244,6 +246,8 @@
 					thisObject.imageDidLoad.call(thisObject, arguments);
 				
 				}
+			
+			//	Fixme: wrap it within a selector-string-debated element?
 			
 			})()).appendTo(thisObject.manifestObject);
 		
@@ -295,7 +299,7 @@
 		
 		
 		
-		/* (void) */ initialize: function (inOptions, inDelegate) {
+		/* (void) */ initialize: function (inOptions, inDelegate, inContextInfo) {
 		
 			this.extend(JS.Delegatable);
 		
@@ -314,10 +318,18 @@
 		
 			}, inOptions);
 			
+			this.contextInfo = inContextInfo;
+			
 			this.setDelegate(inDelegate);
 			
 			this.slides = [];
-			this.slides = this.delegate.slidesForController(this);
+			
+			var thisObject = this; 
+			this.slides = $.map(this.delegate.slidesForController(this), function (inObject) {
+			
+				return new iridia.slidesControllerSlide(inObject, thisObject);
+			
+			});
 
 			this.timer = null;
 
