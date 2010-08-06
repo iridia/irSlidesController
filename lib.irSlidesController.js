@@ -211,7 +211,6 @@
 		initialize: function (inOptions, inDelegate) {
 		
 			this.extend(JS.Delegatable);
-		
 			this.options = $.extend(jQuery.kDeepCopyEnabled, {
 
 				name: "",
@@ -227,6 +226,8 @@
 			
 			this.width = null;
 			this.height = null;
+			
+			this.contentStore = null;
 			
 			if (this.options.payloadResource !== null)
 			this.loadContent();
@@ -247,32 +248,23 @@
 		
 		loadContent: function () {
 		
-		//	Assume payload is image
-		
+			this.contentStore = $("<img>");
 			var thisObject = this;
+			this.delegate.slideWillLoad(this, this.options.contextInfo);
 			
-			$("<img>").attr("src", thisObject.options.payloadResource).bind("load", (function () {
+			thisObject.contentStore.hide().appendTo("body").hide().bind("load", function () {
 			
-				return function () {
-				
-					thisObject.imageDidLoad.call(thisObject, arguments);
-				
-				}
+				thisObject.imageDidLoad.call(thisObject, event);
 			
-			//	Fixme: wrap it within a selector-string-debated element?
-			
-			})()).appendTo(thisObject.manifestObject);
+			}).attr("src", thisObject.options.payloadResource);
 		
 		},
 		
 		imageDidLoad: function (event) {
 		
 			this.slideReady = true;
-			
-			this.delegate.slideDidLoad(this, this.options.contextInfo);
-		
-			if (this.delegate.slideShouldShow(this))
-			this.delegate.transitionIfAppropriate();
+			this.contentStore.show().appendTo(this.options.manifestObject);			
+			this.delegate.slideDidFinishLoading(this, this.options.contextInfo);
 		
 		}
 	
