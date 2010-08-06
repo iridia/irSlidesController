@@ -287,7 +287,9 @@
 				/* (void) */ "slideWillDisappear" /* (slideController, theSlide) */,
 				/* (void) */ "slideDidDisappear" /* (slideController, theSlide) */,
 				
-				/* (Boolean) */ "slidesControllerShouldShowSlide" /* (slideController, theSlide) */
+				/* (Boolean) */ "slidesControllerShouldShowSlide" /* (slideController, theSlide) */,
+				
+				/* ([(Number) width, (Number) height]) */ "defaultSlideSize" /* (slideController) */
 			
 			])
 		
@@ -323,9 +325,17 @@
 			this.slides = [];
 			
 			var thisObject = this; 
+			
+			var defaultSlideSize = this.delegate.defaultSlideSize(this);
+			
 			this.slides = $.map(this.delegate.slidesForController(this), function (inObject) {
 			
-				return new iridia.slidesControllerSlide(inObject, thisObject);
+				var theSlide = new iridia.slidesControllerSlide(inObject, thisObject);
+				
+				theSlide.width = defaultSlideSize[0];
+				theSlide.height = defaultSlideSize[1];
+				
+				return theSlide;
 			
 			});
 
