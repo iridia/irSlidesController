@@ -252,7 +252,7 @@
 			var thisObject = this;
 			this.delegate.slideWillLoad(this, this.options.contextInfo);
 			
-			thisObject.contentStore.hide().appendTo("body").hide().bind("load", function () {
+			thisObject.contentStore.hide().appendTo("body").hide().bind("load", function (event) {
 			
 				thisObject.imageDidLoad.call(thisObject, event);
 			
